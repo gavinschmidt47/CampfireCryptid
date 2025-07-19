@@ -4,12 +4,18 @@ using UnityEngine.InputSystem;
 
 public class ShhotingEyes : MonoBehaviour
 {
-    public GameObject gunCrosshair;
+    public RectTransform gunCrosshair;
     public GameObject eyes;
-    public float upperBound = 5.5f;
-    public float lowerBound = -3.5f;
-    public float leftBound = -8.5f;
-    public float rightBound = 8.5f;
+    public float eyeSpawnUpperBound = 5.5f;
+    public float eyeSpawnLowerBound = -3.5f;
+    public float eyeSpawnLeftBound = -8.5f;
+    public float eyeSpawnRightBound = 8.5f;
+    public float crosshairUpperBound = 177.0f;
+    public float crosshairLowerBound = -176.0f;
+    public float crosshairLeftBound = -353.0f;
+    public float crosshairRightBound = 356.0f;
+    public Canvas canvas;
+
     private float spawnTimer = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,25 +31,13 @@ public class ShhotingEyes : MonoBehaviour
         float moveY = Keyboard.current.sKey.isPressed ? -1 :
                       Keyboard.current.wKey.isPressed ? 1 : 0;
 
-        float speed = 4f;
-        Vector3 movement = new Vector3(moveX, moveY, 0f) * speed * Time.deltaTime;
-        gunCrosshair.transform.position += movement;
-        if(gunCrosshair.transform.position.x < leftBound)
-        {
-            gunCrosshair.transform.position = new Vector3(leftBound, gunCrosshair.transform.position.y, gunCrosshair.transform.position.z);
-        }
-        if (gunCrosshair.transform.position.y > upperBound)
-        {
-            gunCrosshair.transform.position = new Vector3(gunCrosshair.transform.position.x, upperBound, gunCrosshair.transform.position.z);
-        }
-        if (gunCrosshair.transform.position.y < lowerBound)
-        {
-            gunCrosshair.transform.position = new Vector3(gunCrosshair.transform.position.x, lowerBound, gunCrosshair.transform.position.z);
-        }
-        if (gunCrosshair.transform.position.x > rightBound)
-        {
-            gunCrosshair.transform.position = new Vector3(rightBound, gunCrosshair.transform.position.y, gunCrosshair.transform.position.z);
-        }
+        float speed = 200f; 
+        Vector2 movement = new Vector2(moveX, moveY) * speed * Time.deltaTime;
+        gunCrosshair.anchoredPosition += movement;
+        gunCrosshair.anchoredPosition = new Vector2(
+            Mathf.Clamp(gunCrosshair.anchoredPosition.x, crosshairLeftBound, crosshairRightBound),
+            Mathf.Clamp(gunCrosshair.anchoredPosition.y, crosshairLowerBound, crosshairUpperBound)
+        );
         // Every Second, spawn a new eye
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= 1f)
@@ -62,8 +56,8 @@ public class ShhotingEyes : MonoBehaviour
     public void SpawnEyes()
     {
         // Get random position within bounds
-        float randomX = Random.Range(leftBound, rightBound);
-        float randomY = Random.Range(lowerBound, upperBound);
+        float randomX = Random.Range(eyeSpawnLeftBound, eyeSpawnRightBound);
+        float randomY = Random.Range(eyeSpawnLowerBound, eyeSpawnUpperBound);
         // Instantiate the eyes at the random position
         GameObject newEyes = Instantiate(eyes, new Vector3(randomX, randomY, -1f), Quaternion.identity);
         // Quaternion.identity means no rotation
@@ -88,14 +82,17 @@ public class ShhotingEyes : MonoBehaviour
 
     private bool IsEyeWithinCrosshair(GameObject eye)
     {
-        // Get the position of the eye
+        // Convert crosshair anchoredPosition (UI) to world position
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, gunCrosshair.position);
+        Vector3 crosshairWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, Mathf.Abs(Camera.main.transform.position.z + 1f)));
+
         Vector3 eyePosition = eye.transform.position;
-        // Get the position of the crosshair
-        Vector3 crosshairPosition = gunCrosshair.transform.position;
-        // Check if the eye is within the bounds of the crosshair
-        return (eyePosition.x >= crosshairPosition.x - 0.5f && eyePosition.x <= crosshairPosition.x + 0.5f &&
-                eyePosition.y >= crosshairPosition.y - 0.5f && eyePosition.y <= crosshairPosition.y + 0.5f);
+
+        // Check if the eye is within the bounds of the crosshair 
+        return (eyePosition.x >= crosshairWorldPos.x - 1.0f && eyePosition.x <= crosshairWorldPos.x + 1.0f &&
+                eyePosition.y >= crosshairWorldPos.y - 1.0f && eyePosition.y <= crosshairWorldPos.y + 1.0f);
     }
+
 
 
 
