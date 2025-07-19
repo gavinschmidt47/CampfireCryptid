@@ -4,6 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Sticks
+  - Fire
+  - Effigy
   - Eye
   layers:
   - Default
@@ -39,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fire
+    uniqueID: 3791005665
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
