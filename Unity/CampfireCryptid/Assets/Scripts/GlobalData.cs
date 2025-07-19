@@ -4,18 +4,22 @@ using UnityEngine;
 public class GlobalData : ScriptableObject
 {
     // Time before end
-    public float secondsLeftBeforeNight = 600f;
+    public float secondsLeftBeforeNight = 1200f;
 
     // Time before fire dies
     public float secondsLeftBeforeFireDies = 0f;
 
     // Minigames Completed
-    public bool[] minigamesCompleted = new bool[3];
+    public bool[] minigamesCompleted = new bool[2];
+    // Minigame Progress
+    public int[] minigameProgress = new int[2];
     /*
-     * [1] = Fishing
-     * [2] = Hunting
-     * [3] = Exploring
+     * [0] = Fishing
+     * [1] = Effigies
      */
+
+    // Current Day
+    public int currDay = 0;
 
     // Call these every frame (Pass Time.deltaTime)
     public void TimeSetDown(float currentTime)
@@ -65,6 +69,15 @@ public class GlobalData : ScriptableObject
         else
         {
             Debug.LogWarning("Index out of bounds for minigamesCompleted array.");
+        }
+    }
+
+    public void NextDay()
+    {
+        secondsLeftBeforeNight = 1200f - (currDay * 120f);
+        if (secondsLeftBeforeNight < 60f)
+        {
+            secondsLeftBeforeNight = 60f;
         }
     }
 }
