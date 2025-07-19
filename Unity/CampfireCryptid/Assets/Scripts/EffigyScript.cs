@@ -4,6 +4,7 @@ public class EffigyScript : MonoBehaviour
 {
     public GameObject effigyPrefab; // Prefab for the effigies
     public int numberOfEffigies; // Number of effigies in the scene
+    public int maxNumberOfEffigies = 10; // Maximum number of effigies allowed
     public int minTimeBetween = 5; // Time in seconds between each spawn
     public int maxTimeBetween = 15; // Time in seconds between each spawn
     public int effigyCurLoc; // Current location of the effigy
@@ -57,7 +58,7 @@ public class EffigyScript : MonoBehaviour
         {
             
 			Instantiate(prefab, effigyCurLoc, Quaternion.identity);
-            //yeild return new WaitForSeconds(Random.Range(minTimeBetween, maxTimeBetween));
+            yeild return new WaitForSeconds(Random.Range(minTimeBetween, maxTimeBetween));
             numberOfEffigies++;
         }
     }
