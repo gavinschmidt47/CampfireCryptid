@@ -23,11 +23,19 @@ public class FireTendingManager : MonoBehaviour
     public Image fireSliderFill; // Reference to the fill image of the fire slider
     public RectTransform fireSliderHandle; // Reference to the handle of the fire slider
 
+    [Header("Post-Processing Effect")]
+    [SerializeField]
+    private Image staticEffect; // Material for the post-processing effect
+
+
+    // In-game trackers
     private int SticksCollected = 0; // Counter for collected sticks
     private bool collectingSticks = true; // Flag to check if collecting sticks is active
     private bool isDragging = false; // Flag to check if the player is dragging a stick
     private GameObject draggedStick; // Reference to the currently dragged stick
     private float fireLife = 0f; // Variable to track the fire's life
+    private bool transitioning = false; // Flag to check if a transition is in progress
+    private float effectAmount = 0f; // Amount of the post-processing effect to apply
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,10 +53,10 @@ public class FireTendingManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
-        
+        // Check for mouse input
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             // Get the mouse position
@@ -57,26 +65,26 @@ public class FireTendingManager : MonoBehaviour
             // Create a ray from the camera
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
+            // Check if the ray hits a stick object
             if (Physics.Raycast(ray, out RaycastHit hit) && hit.collider.CompareTag("Sticks"))
             {
+                // Check if in collectingSticks
                 if (collectingSticks)
                 {
                     SticksCollected++;
-                    Debug.Log("Sticks Collected: " + SticksCollected);
-                    // Optionally, destroy the stick object
                     Destroy(hit.collider.gameObject);
                 }
                 else
                 {
                     // If not collecting sticks, allow dragging the stick
                     isDragging = true;
-                    Debug.Log("Dragging stick: " + hit.collider.gameObject.name);
                     draggedStick = hit.collider.gameObject; // Store the dragged stick reference
                 }
             }
         }
 
-        if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
+        // Check if the left mouse button is released to place the stick at the fire
+        if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame && isDragging)
         {
             
             // Get the mouse position
@@ -84,20 +92,21 @@ public class FireTendingManager : MonoBehaviour
             // Create a ray from the camera
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
+            // RaycastAll to go past held object
             RaycastHit[] hits = Physics.RaycastAll(ray);
             foreach (var hit in hits)
             {
-                Debug.Log("Hit object: " + hit.collider.name);
                 if (hit.collider.CompareTag("Fire"))
                 {
                     // Move the dragged stick to the mouse position
                     draggedStick.transform.position = new Vector3(hit.point.x, 1.6f, hit.point.z);
-                    Debug.Log("Stick placed at the fire: " + draggedStick.name);
+
                     Destroy(draggedStick); // Destroy the stick after placing it at the fire
+
                     fireLife += Random.Range(5f, 10f); // Increase fire life by a random amount
+                    fireSlider.value = fireLife;
 
-                    fireSlider.value = fireLife; 
-
+                    // Update the fire slider fill color and handle size based on fire life
                     float t = Mathf.Clamp01(fireLife / 100f);
                     fireSliderFill.color = Color.Lerp(Color.yellow, Color.red, t);
                     fireSliderHandle.localScale = Vector3.Lerp(new Vector3(0.66f, 0.66f, 0.66f), new Vector3(2.6f, 2.6f, 2.6f), t);
@@ -109,9 +118,9 @@ public class FireTendingManager : MonoBehaviour
                     break;
                 }
             }
+
             // Stop dragging when the left mouse button is released
             isDragging = false;
-            Debug.Log("Stopped dragging stick.");
             draggedStick = null; // Clear the dragged stick reference
         }
 
@@ -121,10 +130,9 @@ public class FireTendingManager : MonoBehaviour
             if(collectingSticks && SticksCollected >= numSticksToCollect)
             {
                 collectingSticks = false; // Stop collecting sticks
-                Debug.Log("Enough sticks collected, moving camera.");
-                
-                // Move the camera down and back
-                mainCam.transform.position += new Vector3(0, -2f, -12f);
+
+                StartCoroutine(TransitionRoutine(mainCam, new Vector3(0, 5.6f, -25)));
+
                 // Show sticks at the fire
                 ShowSticksAtFire(numSticksToCollect); // Show remaining sticks at the fire
 
@@ -133,8 +141,10 @@ public class FireTendingManager : MonoBehaviour
             }
             else if (!collectingSticks)
             {
-                // Move the camera up and forwards
-                mainCam.transform.position += new Vector3(0, 2f, 12f);
+                
+                // Start transition effect
+                StartCoroutine(TransitionRoutine(mainCam, new Vector3(0, 7.8f, -12.26f)));
+
                 collectingSticks = true; // Resume collecting sticks
                 SpawnSticks(numSticksToSpawn); // Spawn more sticks if needed
             }
@@ -174,5 +184,45 @@ public class FireTendingManager : MonoBehaviour
         { 
             Instantiate(stickPrefab, new Vector3(Random.Range(-spawnRadius.x, spawnRadius.x), 1.6f, -18 + Random.Range(-spawnRadius.y, spawnRadius.y)), Quaternion.Euler(-90f, 0f, 0f)); 
         }
+    }
+
+    IEnumerator TransitionRoutine(Camera mainCam, Vector3 newPosition)
+    {
+        if (transitioning) yield break; // Exit if already transitioning
+        staticEffect.gameObject.SetActive(true); // Enable the static effect
+        transitioning = true;
+
+        // Fade in effect
+        for (float t = 0; t < 1f / 2f; t += Time.deltaTime)
+        {
+            effectAmount = Mathf.Lerp(0, 1, t / (1f / 2f));
+
+            staticEffect.material.SetFloat("_StaticStrength", effectAmount);
+
+            yield return null;
+        }
+        effectAmount = 1f;
+
+        staticEffect.material.SetFloat("_StaticStrength", effectAmount);
+
+        // Move the camera up and forwards
+        mainCam.transform.position = newPosition;
+
+        // Fade out effect
+        for (float t = 0; t < 1f / 2f; t += Time.deltaTime)
+        {
+            effectAmount = Mathf.Lerp(1, 0, t / (1f / 2f));
+
+            staticEffect.material.SetFloat("_StaticStrength", effectAmount);
+
+            yield return null;
+        }
+        effectAmount = 0f;
+
+        staticEffect.material.SetFloat("_StaticStrength", effectAmount);
+
+        // Reset the static effect
+        staticEffect.gameObject.SetActive(false); // Disable the static effect
+        transitioning = false;
     }
 }
