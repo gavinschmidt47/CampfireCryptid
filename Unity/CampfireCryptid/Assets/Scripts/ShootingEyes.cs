@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ShhotingEyes : MonoBehaviour
 {
     public RectTransform gunCrosshair;
-    public GameObject eyes;
+    public GameObject[] eyePrefabs;
     public float eyeSpawnUpperBound = 5.5f;
     public float eyeSpawnLowerBound = -3.5f;
     public float eyeSpawnLeftBound = -8.5f;
@@ -48,7 +48,7 @@ public class ShhotingEyes : MonoBehaviour
         float moveY = Keyboard.current.sKey.isPressed ? -1 :
                       Keyboard.current.wKey.isPressed ? 1 : 0;
 
-        float speed = 400f; 
+        float speed = 500f; 
         Vector2 movement = new Vector2(moveX, moveY) * speed * Time.deltaTime;
         gunCrosshair.anchoredPosition += movement;
         gunCrosshair.anchoredPosition = new Vector2(
@@ -64,7 +64,7 @@ public class ShhotingEyes : MonoBehaviour
         }
 
         healthTimer += Time.deltaTime;
-        if (healthTimer >= 3f)
+        if (healthTimer >= 1.5f)
         {
             if (health != null)
             {
@@ -91,16 +91,24 @@ public class ShhotingEyes : MonoBehaviour
 
     public void SpawnEyes()
     {
-        // Get random position within bounds
+        int randomIndex = Random.Range(0, eyePrefabs.Length);
+        GameObject selectedEye = eyePrefabs[randomIndex];
+        GameObject newEyes = Instantiate(selectedEye, canvas.transform);
+        newEyes.tag = "Eye";
+
+        RectTransform eyeRect = newEyes.GetComponent<RectTransform>();
         float randomX = Random.Range(eyeSpawnLeftBound, eyeSpawnRightBound);
         float randomY = Random.Range(eyeSpawnLowerBound, eyeSpawnUpperBound);
-        // Instantiate the eyes at the random position
-        GameObject newEyes = Instantiate(eyes, new Vector3(randomX, randomY, -1f), Quaternion.identity);
-        // Quaternion.identity means no rotation
+        eyeRect.anchoredPosition = new Vector2(randomX, randomY);
 
-        // After 3 seconds if it is not shot destory the eye
+        // Move crosshair to be the last child so it's always on top
+        gunCrosshair.SetAsLastSibling();
+
         Destroy(newEyes, 3f);
     }
+
+
+
 
     public void ShootEyes()
     {
@@ -129,16 +137,34 @@ public class ShhotingEyes : MonoBehaviour
 
     private bool IsEyeWithinCrosshair(GameObject eye)
     {
-        // Convert crosshair anchoredPosition (UI) to world position
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, gunCrosshair.position);
-        Vector3 crosshairWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, Mathf.Abs(Camera.main.transform.position.z + 1f)));
+        RectTransform eyeRect = eye.GetComponent<RectTransform>();
+        if (eyeRect == null)
+        {
+            Debug.LogWarning("Missing RectTransform on: " + eye.name);
+            return false;
+        }
+        RectTransform crosshairRect = gunCrosshair;
 
-        Vector3 eyePosition = eye.transform.position;
+        Vector3[] crosshairCorners = new Vector3[4];
+        Vector3[] eyeCorners = new Vector3[4];
+        crosshairRect.GetWorldCorners(crosshairCorners);
+        eyeRect.GetWorldCorners(eyeCorners);
 
-        // Check if the eye is within the bounds of the crosshair 
-        return (eyePosition.x >= crosshairWorldPos.x - 1.0f && eyePosition.x <= crosshairWorldPos.x + 1.0f &&
-                eyePosition.y >= crosshairWorldPos.y - 1.0f && eyePosition.y <= crosshairWorldPos.y + 1.0f);
+        // Create the crosshair rect and shrink it by a scale factor 
+        float shrinkFactor = 0.15f; 
+        Vector2 crosshairSize = (crosshairCorners[2] - crosshairCorners[0]);
+        Vector2 crosshairCenter = (crosshairCorners[0] + crosshairCorners[2]) * 0.5f;
+        Vector2 newSize = crosshairSize * shrinkFactor;
+        Vector2 newMin = crosshairCenter - newSize * 0.5f;
+        Rect crosshairWorldRect = new Rect(newMin, newSize);
+
+        Rect eyeWorldRect = new Rect(eyeCorners[0], eyeCorners[2] - eyeCorners[0]);
+
+        return crosshairWorldRect.Overlaps(eyeWorldRect);
     }
+
+
+
 
     private IEnumerator ScreenShake()
     {
