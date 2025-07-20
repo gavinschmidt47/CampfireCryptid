@@ -9,11 +9,24 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public GameObject gameOverScreen;
     public GameObject starveScreen;
 
+
+    [Header("Other objects")]
+    public Slider fireSlider; // Reference to the UI slider for fire life
+    public Image fireSliderFill; // Reference to the fill image of the fire slider
+    public RectTransform fireSliderHandle; // Reference to the handle of the fire slider
+
     // Update is called once per frame
     void Update()
     {
         globalData.TimeSetDown(Time.deltaTime);
         globalData.FireSetDown(Time.deltaTime);
+
+        // Update the fire slider value and fill color based on fire life
+        fireSlider.value = globalData.secondsLeftBeforeFireDies; // Update slider value from Global Data
+        // Update the fire slider fill color and handle size based on fire life
+        float t = Mathf.Clamp01(globalData.secondsLeftBeforeFireDies / 100f);
+        fireSliderFill.color = Color.Lerp(Color.yellow, Color.red, t);
+        fireSliderHandle.localScale = Vector3.Lerp(new Vector3(0.66f, 0.66f, 0.66f), new Vector3(2.6f, 2.6f, 2.6f), t);
 
         if (globalData.gameOver)
         {

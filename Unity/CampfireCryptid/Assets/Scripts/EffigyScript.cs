@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class EffigyScript : MonoBehaviour
 {
@@ -58,32 +59,36 @@ public class EffigyScript : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    // ... (rest of your code)
+
     void Update()
     {
         globalData.TimeSetDown(Time.deltaTime);
         globalData.FireSetDown(Time.deltaTime);
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame )
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Get the mouse position
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-
-            // Create a ray from the camera to the mouse position
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                // Debug log to see what was hit
                 Debug.Log("Hit: " + hit.collider.name);
-                // Check if the hit object is an effigy
                 if (hit.collider.CompareTag("Effigy"))
                 {
-                    // Destroy the effigy
                     Destroy(hit.collider.gameObject);
                     Debug.Log("Effigy destroyed!");
-                    // Update global data
-                    //globalData.minigameProgress[1]++; // Increment Effigies minigame progress
+                    globalData.minigameProgress[1]++;
+                    if (globalData.minigameProgress[1] >= 25)
+                    {
+                        globalData.minigamesCompleted[1] = true;
+                        Debug.Log("Effigies minigame completed!");
+                    }
                 }
             }
+        }
+        // Check for Enter key press to go to main scene
+        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("Main");
         }
     }
 }

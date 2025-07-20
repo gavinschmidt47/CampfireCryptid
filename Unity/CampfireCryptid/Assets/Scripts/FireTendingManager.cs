@@ -104,7 +104,7 @@ public class FireTendingManager : MonoBehaviour
             // Create a ray from the camera
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 
-            // RaycastAll to go past held object
+            // Raycast All to go past held object
             RaycastHit[] hits = Physics.RaycastAll(ray);
             foreach (var hit in hits)
             {

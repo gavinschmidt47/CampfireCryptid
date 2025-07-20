@@ -3,6 +3,7 @@ using System.IO.Compression;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class BobberCatch : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class BobberCatch : MonoBehaviour
                 if (Random.Range(1, 10) >= 4) CatchFish();
                 else LoseFish();
             }
+        }
+        // Check for Enter key press to go to main scene
+        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("Main");
         }
     }
 
