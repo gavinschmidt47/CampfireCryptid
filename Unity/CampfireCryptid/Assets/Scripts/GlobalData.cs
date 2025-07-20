@@ -24,6 +24,9 @@ public class GlobalData : ScriptableObject
     public bool gameOver = false;
     public bool fireOut = false;
 
+    // Audio
+    public bool hasAudio = false; // Toggle for audio
+
     // Call these every frame (Pass Time.deltaTime)
     public void TimeSetDown(float currentTime)
     {
@@ -98,6 +101,20 @@ public class GlobalData : ScriptableObject
         if (secondsLeftBeforeNight < 60f)
         {
             secondsLeftBeforeNight = 60f;
+        }
+        currDay++; // Increment the day count
+        secondsLeftBeforeFireDies = 100f; // Reset fire time for the new day
+        gameOver = false; // Reset game over state
+        fireOut = false; // Reset fire out state
+        // Reset minigame progress
+        for (int i = 0; i < minigameProgress.Length; i++)
+        {
+            minigameProgress[i] = 0; // Reset progress for each minigame
+        }
+        // Reset minigames completed
+        for (int i = 0; i < minigamesCompleted.Length; i++)
+        {
+            minigamesCompleted[i] = false; // Reset completion status for each minigame
         }
     }
 }

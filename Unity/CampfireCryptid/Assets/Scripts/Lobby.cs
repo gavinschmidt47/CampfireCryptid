@@ -1,4 +1,3 @@
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -47,6 +46,11 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             // Change scene when fire is out
             UnityEngine.SceneManagement.SceneManager.LoadScene("ShootingEyes");
+        }
+
+        if(globalData.GetMinigamesCompletedCount() >= 2)
+        {
+            globalData.NextDay();
         }
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)

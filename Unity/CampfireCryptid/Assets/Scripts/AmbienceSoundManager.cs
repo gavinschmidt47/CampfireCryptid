@@ -14,6 +14,11 @@ public class AmbienceSoundManager : MonoBehaviour
 
     public void Start()
     {
+        if (globalData.hasAudio)
+            Destroy(gameObject); // Destroy this object if audio is disabled in GlobalData
+
+        DontDestroyOnLoad(gameObject); // Prevent this object from being destroyed on scene load
+
         // Initialize the audio sources
         audioSources = new AudioSource[ambienceClips.Length];
         for (int i = 0; i < ambienceClips.Length; i++)
@@ -29,6 +34,8 @@ public class AmbienceSoundManager : MonoBehaviour
         }
 
         audioSources[currentClipIndex].volume = 1f; // Start playing the first clip
+
+        globalData.hasAudio = true; // Set the audio flag in GlobalData
     }
 
     public void Update()

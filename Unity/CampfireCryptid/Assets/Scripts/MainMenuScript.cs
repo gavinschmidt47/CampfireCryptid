@@ -10,10 +10,11 @@ public class MainMenuScript : MonoBehaviour
     void Start()
     {
         globalData.secondsLeftBeforeNight = 1200f;
-        globalData.secondsLeftBeforeFireDies = 120f;
+        globalData.secondsLeftBeforeFireDies = 100f;
         globalData.currDay = 0;
         globalData.gameOver = false;
         globalData.fireOut = false;
+        globalData.hasAudio = false;
     }
 
     // Update is called once per frame

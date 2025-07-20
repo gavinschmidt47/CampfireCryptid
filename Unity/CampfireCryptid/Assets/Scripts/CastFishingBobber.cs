@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
-using UnityEditor.SceneTemplate;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class CastFishingBobber : MonoBehaviour
 {
@@ -44,6 +44,12 @@ public class CastFishingBobber : MonoBehaviour
         }
 
         if (GameObject.FindWithTag("Bobber") == null) bobberExists = false;
+
+        // Check for Enter key press to go to main scene
+        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("Main");
+        }
     }
 
     void SpawnBobber()

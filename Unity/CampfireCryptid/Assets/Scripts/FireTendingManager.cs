@@ -127,7 +127,7 @@ public class FireTendingManager : MonoBehaviour
                     if (fireLife > 100f)
                     {
                         fireLife = 100f; // Cap the fire life at 100
-
+                        StartCoroutine(WaitForEndOfFrame());
                         SceneManager.LoadScene("Main"); // Load the Lobby scene when fire life is full
                     }
 
@@ -241,5 +241,11 @@ public class FireTendingManager : MonoBehaviour
         // Reset the static effect
         staticEffect.gameObject.SetActive(false); // Disable the static effect
         transitioning = false;
+    }
+
+    IEnumerator WaitForEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame(); // Wait for the end of the frame to ensure all updates are processed
+        globalData.secondsLeftBeforeFireDies = fireLife; // Update Global Data with the final fire life
     }
 }
