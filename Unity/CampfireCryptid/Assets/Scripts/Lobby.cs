@@ -1,5 +1,7 @@
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NewMonoBehaviourScript : MonoBehaviour
@@ -44,6 +46,28 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             // Change scene when fire is out
             UnityEngine.SceneManagement.SceneManager.LoadScene("ShootingEyes");
+        }
+
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Debug.Log("Hit: " + hit.collider.name);
+                if (hit.collider.CompareTag("Effigy"))
+                {
+                    SceneManager.LoadScene("EffigyRemover");
+                }
+                else if (hit.collider.CompareTag("Bobber"))
+                {
+                    SceneManager.LoadScene("Fishing");
+                }
+                else if (hit.collider.CompareTag("Fire"))
+                {
+                    SceneManager.LoadScene("FireTending");
+                }
+            }
         }
     }
 }
