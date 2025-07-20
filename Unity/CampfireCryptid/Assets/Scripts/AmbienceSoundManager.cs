@@ -4,86 +4,67 @@ using UnityEngine;
 
 public class AmbienceSoundManager : MonoBehaviour
 {
-    // Audio source for the ambience sound
-    public AudioClip ambienceBase;
-    public AudioClip ambienceT1;
-    public AudioClip ambienceT2;
+    public AudioClip[] ambienceClips; // Array to hold the ambience audio clips
 
-    public AudioSource audioSource1;
-    public AudioSource audioSource2;
-    public AudioSource audioSource3;
+    public GlobalData globalData; // Reference to the GlobalData scriptable object
 
-    public void Awake()
+    private AudioSource[] audioSources; // Array to hold the audio sources for each clip
+
+    private int currentClipIndex = 3; // Index of the currently playing clip
+
+    public void Start()
     {
-        audioSource1.loop = true; // Set the audio to loop
-        audioSource1.clip = ambienceBase; // Set the base ambience sound
-        audioSource1.volume = 1f; // Set the volume for the base ambience sound
-        audioSource1.Play(); // Start playing the base ambience sound
+        // Initialize the audio sources
+        audioSources = new AudioSource[ambienceClips.Length];
+        for (int i = 0; i < ambienceClips.Length; i++)
+        {
+            audioSources[i] = this.AddComponent<AudioSource>();
+            audioSources[i].clip = ambienceClips[i];
+            audioSources[i].loop = true;
+            audioSources[i].playOnAwake = false;
+            audioSources[i].volume = 0f; // Set a default volume
+            audioSources[i].minDistance = 1f; // Set minimum distance for 3D sound
+            audioSources[i].maxDistance = 500f; // Set maximum distance for 3D sound
+            audioSources[i].Play(); // Set to 3D sound
+        }
 
-        audioSource2.loop = true; // Set the audio to loop
-        audioSource2.clip = ambienceT1; // Set the first ambience sound
-        audioSource2.volume = 0f; // Set the volume for the first ambience sound
-        audioSource2.Play(); // Start playing the first ambience sound
-
-        audioSource3.loop = true; // Set the audio to loop
-        audioSource3.clip = ambienceT2; // Set the second ambience sound
-        audioSource3.volume = 0f; // Set the volume for the second ambience sound
-        audioSource3.Play(); // Start playing the second ambience sound
-
-        DontDestroyOnLoad(gameObject); // Prevent this GameObject from being destroyed on scene load
+        audioSources[currentClipIndex].volume = 1f; // Start playing the first clip
     }
 
-    public void GoUp()
+    public void Update()
     {
-        if (audioSource1.volume > 0f)
+        if (globalData.secondsLeftBeforeNight <= 800.006f && globalData.secondsLeftBeforeNight >= 800f)
         {
-            StartCoroutine(DecreaseVolume(audioSource1)); // Start decreasing the volume of the base ambience sound
-            StartCoroutine(IncreaseVolume(audioSource2)); // Start increasing the volume of the first ambience sound
+            StartCoroutine(TransitionDownClip());
         }
-        else if (audioSource2.volume > 0f)
+        else if (globalData.secondsLeftBeforeNight <= 500.006f && globalData.secondsLeftBeforeNight >= 500f)
         {
-            StartCoroutine(DecreaseVolume(audioSource2)); // Start decreasing the volume of the first ambience sound
-            StartCoroutine(IncreaseVolume(audioSource3)); // Start increasing the volume of the second ambience sound
+            StartCoroutine(TransitionDownClip());
         }
-        else if (audioSource3.volume > 0f)
+        else if (globalData.secondsLeftBeforeNight <= 120.006f && globalData.secondsLeftBeforeNight >= 120f)
         {
-            return; // If the third ambience sound is already playing, do nothing
+            StartCoroutine(TransitionDownClip());
         }
-    }
-
-    public void GoDown()
-    {
-        if (audioSource3.volume > 0f)
+        else if (globalData.secondsLeftBeforeNight <= 60.006f && globalData.secondsLeftBeforeNight >= 60f)
         {
-            StartCoroutine(DecreaseVolume(audioSource3)); // Start decreasing the volume of the second ambience sound
-            StartCoroutine(IncreaseVolume(audioSource2)); // Start increasing the volume of the first ambience sound
-        }
-        else if (audioSource2.volume > 0f)
-        {
-            StartCoroutine(DecreaseVolume(audioSource2)); // Start decreasing the volume of the first ambience sound
-            StartCoroutine(IncreaseVolume(audioSource1)); // Start increasing the volume of the base ambience sound
-        }
-        else if (audioSource1.volume > 0f)
-        {
-            return; // If the base ambience sound is already playing, do nothing
+            StartCoroutine(TransitionDownClip());
         }
     }
 
-    private IEnumerator IncreaseVolume(AudioSource currAudioSource)
+    public IEnumerator TransitionDownClip()
     {
-        while (currAudioSource.volume < 1f)
+        int nextClipIndex = currentClipIndex - 1;
+        // Fade out the current clip
+        float fadeDuration = 2f; // Duration of the fade effect
+        float startVolume = audioSources[currentClipIndex].volume;
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
         {
-            currAudioSource.volume += 0.01f; // Gradually increase the volume
-            yield return new WaitForSeconds(0.1f); // Wait for a short duration before the next increase
+            audioSources[currentClipIndex].volume = Mathf.Lerp(startVolume, 0f, t / fadeDuration);
+            audioSources[nextClipIndex].volume = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            yield return null;
         }
-    }
-
-    private IEnumerator DecreaseVolume(AudioSource currAudioSource)
-    {
-        while (currAudioSource.volume > 0f)
-        {
-            currAudioSource.volume -= 0.01f; // Gradually decrease the volume
-            yield return new WaitForSeconds(0.1f); // Wait for a short duration before the next decrease
-        }
+        audioSources[currentClipIndex].volume = 0f; // Ensure volume is set to 0
+        // Update the index to the next clip
+        currentClipIndex--;
     }
 }
