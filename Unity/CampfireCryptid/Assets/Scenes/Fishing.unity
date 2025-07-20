@@ -423,10 +423,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 2105292415430230556, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.07
@@ -484,10 +480,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fish (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 2105292415430230556, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.1
@@ -544,10 +536,6 @@ PrefabInstance:
     - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_Name
       value: Fish (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2105292415430230556, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_LocalPosition.x
@@ -726,10 +714,6 @@ PrefabInstance:
     - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_Name
       value: Fish
-      objectReference: {fileID: 0}
-    - target: {fileID: 1953456400534238412, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2105292415430230556, guid: 4e684e6520df8004e8e0ce910ccd2643, type: 3}
       propertyPath: m_LocalPosition.x
