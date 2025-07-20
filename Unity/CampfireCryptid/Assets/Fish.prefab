@@ -48,10 +48,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0935d71352926494285a6ccbcebc7e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bobberPrefab: {fileID: 7774724952272579856, guid: 521f581ddead4d344bae608ffc2f793f, type: 3}
   navLayer:
     serializedVersion: 2
     m_Bits: 64
-  movementRange: 10
+  bobberLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  movementRange: 5
 --- !u!33 &5871955629424297599
 MeshFilter:
   m_ObjectHideFlags: 0

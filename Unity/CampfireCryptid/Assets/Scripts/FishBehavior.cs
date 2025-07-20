@@ -8,9 +8,9 @@ public class FishBehavior : MonoBehaviour
 
     [SerializeField] GameObject bobberPrefab;
     GameObject bobberTarget;
-    float detectBobberRange = 100;
+    float detectBobberRange = 5;
 
-    [SerializeField] LayerMask navLayer;
+    [SerializeField] LayerMask navLayer, bobberLayer;
 
     //Movement
     Vector3 destination;
@@ -22,17 +22,28 @@ public class FishBehavior : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        InvokeRepeating("Swim", 0f, 1f);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Swim();
+        //Random Swimming Pattern
+        // Swim();
 
-        bobberTarget = GameObject.FindGameObjectWithTag("").get
-        if (bobberTarget = null) return;
-        else
+        //Detect Nearby Bobber
+        Collider[] bobbers = Physics.OverlapSphere(transform.position, 1, bobberLayer);
+        foreach (Collider hitCollider in bobbers)
+        {
+            GameObject hitObject = hitCollider.gameObject;
+            bobberTarget = hitObject;
+            // Debug.Log("Found Bobber: " + hitObject.name);
+        }
+        
+        //Continue Swimming if Bobber isnt detected
+        if (bobberTarget == null) return;
+        else //Swim toward bobber
         {
             float distanceToBobber = Vector3.Distance(transform.position, bobberTarget.transform.position);
             if (distanceToBobber >= detectBobberRange) return;
