@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ShowTimer : MonoBehaviour
 {
@@ -20,8 +22,5 @@ public class ShowTimer : MonoBehaviour
         timerTextTMP.text = $"Time Left: {globalData.secondsLeftBeforeNight}";
         Debug.Log($"secondsLeftBeforeNight: {globalData.secondsLeftBeforeNight}");
     }
-
-
-
 }
 
