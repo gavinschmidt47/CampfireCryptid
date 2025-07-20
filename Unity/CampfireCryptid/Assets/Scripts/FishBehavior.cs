@@ -8,7 +8,7 @@ public class FishBehavior : MonoBehaviour
 
     [SerializeField] GameObject bobberPrefab;
     GameObject bobberTarget;
-    float detectBobberRange = 5;
+    float detectBobberRange = 2;
 
     [SerializeField] LayerMask navLayer, bobberLayer;
 

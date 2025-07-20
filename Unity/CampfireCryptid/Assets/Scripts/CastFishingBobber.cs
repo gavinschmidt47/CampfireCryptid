@@ -14,7 +14,7 @@ public class CastFishingBobber : MonoBehaviour
 
     void Start()
     {
-
+        if (GameObject.FindWithTag("Bobber") == null) bobberExists = false;
     }
 
     void Update()
@@ -36,6 +36,8 @@ public class CastFishingBobber : MonoBehaviour
                 else ReelInBobber();
             }
         }
+
+        if (GameObject.FindWithTag("Bobber") == null) bobberExists = false;
     }
 
     void SpawnBobber()

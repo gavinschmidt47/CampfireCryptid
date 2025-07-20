@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8630587444166117448}
   - component: {fileID: 2157792810498322901}
   - component: {fileID: 4010820665847248656}
+  - component: {fileID: -6581812497094255508}
   m_Layer: 7
   m_Name: FishingBobber
   m_TagString: Bobber
@@ -108,3 +109,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6581812497094255508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7774724952272579856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0687c31f27d434a4e955073714f0aaec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fishLayer:
+    serializedVersion: 2
+    m_Bits: 256
