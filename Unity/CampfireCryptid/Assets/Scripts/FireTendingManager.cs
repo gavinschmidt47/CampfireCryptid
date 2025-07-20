@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class FireTendingManager : MonoBehaviour
 {
@@ -58,6 +59,8 @@ public class FireTendingManager : MonoBehaviour
     {
         globalData.TimeSetDown(Time.deltaTime);
         globalData.FireSetDown(Time.deltaTime);
+
+        fireLife = globalData.secondsLeftBeforeFireDies; // Update fire life from Global Data
         // Check for mouse input
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
@@ -116,7 +119,11 @@ public class FireTendingManager : MonoBehaviour
                     if (fireLife > 100f)
                     {
                         fireLife = 100f; // Cap the fire life at 100
+
+                        SceneManager.LoadScene("Lobby"); // Load the Lobby scene when fire life is full
                     }
+
+                    globalData.secondsLeftBeforeFireDies = fireLife; // Make Global Data aware of the fire life
                     break;
                 }
             }

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
 
 public class ShhotingEyes : MonoBehaviour
@@ -83,8 +85,9 @@ public class ShhotingEyes : MonoBehaviour
             ShootEyes();
         }
         if (health.value >= 100)
-        { 
-            Debug.Log("You win!");
+        {
+            globalData.secondsLeftBeforeFireDies = 100f;
+            SceneManager.LoadScene("Lobby");
         }
         if (health.value <= 0)
         {
