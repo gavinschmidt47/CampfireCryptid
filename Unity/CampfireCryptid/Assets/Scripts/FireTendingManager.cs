@@ -101,6 +101,7 @@ public class FireTendingManager : MonoBehaviour
             RaycastHit[] hits = Physics.RaycastAll(ray);
             foreach (var hit in hits)
             {
+                Debug.Log("Hit: " + hit.collider.name);
                 if (hit.collider.CompareTag("Fire"))
                 {
                     // Move the dragged stick to the mouse position
@@ -169,7 +170,7 @@ public class FireTendingManager : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 // Move the dragged stick to the mouse position
-                draggedStick.transform.position = new Vector3(hit.point.x, 1.6f, hit.point.z + 0.3f);
+                draggedStick.transform.position = new Vector3(hit.point.x, 1.6f, hit.point.z);
             }
         }
     }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72e4a921984f0e479f7fde5575dcee2, type: 3}
   m_Name: GlobalData
   m_EditorClassIdentifier: 
-  secondsLeftBeforeNight: -0.0011132271
-  secondsLeftBeforeFireDies: 0
+  secondsLeftBeforeNight: 109975.73
+  secondsLeftBeforeFireDies: 31.661776
   minigamesCompleted: 0000
   minigameProgress: 0000000000000000
   currDay: 0
