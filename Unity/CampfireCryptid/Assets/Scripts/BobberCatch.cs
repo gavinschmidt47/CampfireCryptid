@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class BobberCatch : MonoBehaviour
 {
+    public GlobalData globalData; // Reference to the GlobalData scriptable object
     [SerializeField] LayerMask fishLayer;
     GameObject targetFish;
 
@@ -16,6 +17,8 @@ public class BobberCatch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        globalData.TimeSetDown(Time.deltaTime);
+        globalData.FireSetDown(Time.deltaTime);
         Collider[] fish = Physics.OverlapSphere(transform.position, 0.25f, fishLayer);
         if (fish.Length > 0 && !waitForFish)
         {
@@ -45,6 +48,16 @@ public class BobberCatch : MonoBehaviour
     void CatchFish()
     {
         Debug.Log("Success");
+        globalData.minigameProgress[0]++;
+        if (globalData.minigameProgress[0] >= 25)
+        {
+            globalData.minigamesCompleted[0] = true;
+            Debug.Log("Fishing minigame completed!");
+        }
+        else
+        {
+            Debug.Log("Caught fish! Progress: " + globalData.minigameProgress[0]);
+        }
         DestroyImmediate(targetFish);
         Destroy(gameObject);
     }

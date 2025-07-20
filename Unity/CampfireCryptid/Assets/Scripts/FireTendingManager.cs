@@ -60,6 +60,13 @@ public class FireTendingManager : MonoBehaviour
         globalData.TimeSetDown(Time.deltaTime);
         globalData.FireSetDown(Time.deltaTime);
 
+        // Update the fire slider value and fill color based on fire life
+        fireSlider.value = globalData.secondsLeftBeforeFireDies; // Update slider value from Global Data
+        // Update the fire slider fill color and handle size based on fire life
+        float t = Mathf.Clamp01(fireLife / 100f);
+        fireSliderFill.color = Color.Lerp(Color.yellow, Color.red, t);
+        fireSliderHandle.localScale = Vector3.Lerp(new Vector3(0.66f, 0.66f, 0.66f), new Vector3(2.6f, 2.6f, 2.6f), t);
+
         fireLife = globalData.secondsLeftBeforeFireDies; // Update fire life from Global Data
         // Check for mouse input
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
@@ -113,7 +120,7 @@ public class FireTendingManager : MonoBehaviour
                     fireSlider.value = fireLife;
 
                     // Update the fire slider fill color and handle size based on fire life
-                    float t = Mathf.Clamp01(fireLife / 100f);
+                    t = Mathf.Clamp01(fireLife / 100f);
                     fireSliderFill.color = Color.Lerp(Color.yellow, Color.red, t);
                     fireSliderHandle.localScale = Vector3.Lerp(new Vector3(0.66f, 0.66f, 0.66f), new Vector3(2.6f, 2.6f, 2.6f), t);
 
