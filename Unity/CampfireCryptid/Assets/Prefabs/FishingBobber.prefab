@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0687c31f27d434a4e955073714f0aaec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalData: {fileID: 11400000, guid: f568fbea8e0702442aa74ff444ac0679, type: 2}
   fishLayer:
     serializedVersion: 2
     m_Bits: 128

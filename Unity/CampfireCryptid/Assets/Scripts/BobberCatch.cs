@@ -18,8 +18,8 @@ public class BobberCatch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        globalData.TimeSetDown(Time.deltaTime);
-        globalData.FireSetDown(Time.deltaTime);
+        // globalData.TimeSetDown(Time.deltaTime);
+        // globalData.FireSetDown(Time.deltaTime);
         Collider[] fish = Physics.OverlapSphere(transform.position, 0.25f, fishLayer);
         if (fish.Length > 0 && !waitForFish)
         {

@@ -17,6 +17,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public Image fireSliderFill; // Reference to the fill image of the fire slider
     public RectTransform fireSliderHandle; // Reference to the handle of the fire slider
 
+
     // Update is called once per frame
     void Update()
     {

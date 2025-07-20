@@ -593,6 +593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bobberPrefab: {fileID: 7774724952272579856, guid: 521f581ddead4d344bae608ffc2f793f, type: 3}
+  globalData: {fileID: 11400000, guid: f568fbea8e0702442aa74ff444ac0679, type: 2}
 --- !u!1001 &1085742190
 PrefabInstance:
   m_ObjectHideFlags: 0

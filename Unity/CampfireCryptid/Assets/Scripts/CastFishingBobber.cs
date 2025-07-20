@@ -9,6 +9,8 @@ public class CastFishingBobber : MonoBehaviour
     Vector3 bobberPosition;
     Quaternion bobberRotation;
 
+    public GlobalData globalData; // Reference to the GlobalData scriptable object
+
     GameObject bobberInstance;
     bool bobberExists = false;
 
@@ -19,6 +21,10 @@ public class CastFishingBobber : MonoBehaviour
 
     void Update()
     {
+
+        globalData.TimeSetDown(Time.deltaTime);
+        globalData.FireSetDown(Time.deltaTime);
+
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             // Get the mouse position

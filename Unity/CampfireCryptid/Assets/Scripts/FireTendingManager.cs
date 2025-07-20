@@ -128,7 +128,7 @@ public class FireTendingManager : MonoBehaviour
                     {
                         fireLife = 100f; // Cap the fire life at 100
 
-                        SceneManager.LoadScene("Lobby"); // Load the Lobby scene when fire life is full
+                        SceneManager.LoadScene("Main"); // Load the Lobby scene when fire life is full
                     }
 
                     globalData.secondsLeftBeforeFireDies = fireLife; // Make Global Data aware of the fire life

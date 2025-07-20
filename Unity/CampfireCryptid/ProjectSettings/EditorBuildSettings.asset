@@ -5,9 +5,27 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 832f07b22d242854584da6845a3a6cb2
+  - enabled: 1
+    path: Assets/Scenes/EffigyRemover.unity
+    guid: 4cf6a0cbf883de9488e46db19b40e101
+  - enabled: 1
+    path: Assets/Scenes/FireTending.unity
+    guid: 11b93d398f7d75c46bad1c5403a71f89
+  - enabled: 1
+    path: Assets/Scenes/Fishing.unity
+    guid: 680a6bbfd7b64604097836a970190678
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: b55d0b534e055864fb918dd2b60a653e
+  - enabled: 1
+    path: Assets/Scenes/ShootEyes.unity
+    guid: 0785257734169d144a5c3b0aa009f98f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
