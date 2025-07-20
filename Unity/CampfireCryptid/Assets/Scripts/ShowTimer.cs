@@ -19,8 +19,8 @@ public class ShowTimer : MonoBehaviour
     {
         globalData.TimeSetDown(Time.deltaTime);
 
-        timerTextTMP.text = $"Time Left: {globalData.secondsLeftBeforeNight}";
-        Debug.Log($"secondsLeftBeforeNight: {globalData.secondsLeftBeforeNight}");
+        timerTextTMP.text = $"{globalData.secondsLeftBeforeNight:F1}";
+        
     }
 }
 
