@@ -46,11 +46,13 @@ public class BobberCatch : MonoBehaviour
     {
         Debug.Log("Success");
         DestroyImmediate(targetFish);
+        Destroy(gameObject);
     }
 
     void LoseFish()
     {
         Debug.Log("Lost it");
         DestroyImmediate(targetFish);
+        Destroy(gameObject);
     }
 }
