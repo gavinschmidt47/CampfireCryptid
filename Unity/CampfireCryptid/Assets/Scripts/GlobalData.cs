@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GlobalData", menuName = "Scriptable Objects/GlobalData")]
@@ -7,7 +8,7 @@ public class GlobalData : ScriptableObject
     public float secondsLeftBeforeNight = 1200f;
 
     // Time before fire dies
-    public float secondsLeftBeforeFireDies = 0f;
+    public float secondsLeftBeforeFireDies = 120f;
 
     // Minigames Completed
     public bool[] minigamesCompleted = new bool[2];
@@ -20,11 +21,26 @@ public class GlobalData : ScriptableObject
 
     // Current Day
     public int currDay = 0;
+    public bool gameOver = false;
+    public bool fireOut = false;
 
     // Call these every frame (Pass Time.deltaTime)
     public void TimeSetDown(float currentTime)
     {
         secondsLeftBeforeNight -= currentTime;
+
+        if (secondsLeftBeforeNight <= 0f && minigamesCompleted[0] && minigamesCompleted[1])
+        {
+            secondsLeftBeforeNight = 0f;
+            currDay++;
+            NextDay(); // Prepare for the next day
+        }
+        else if (secondsLeftBeforeNight <= 0)
+        {
+            // IMPLEMENT LOSS
+            Debug.LogWarning("Time has run out before completing all minigames. Game over or reset required.");
+            gameOver = true;
+        }
     }
     public void FireSetDown(float currentTime)
     {
@@ -32,7 +48,11 @@ public class GlobalData : ScriptableObject
         if (secondsLeftBeforeFireDies > 0)
             secondsLeftBeforeFireDies -= currentTime * 0.3f;
         else
+        {
             secondsLeftBeforeFireDies = 0f;
+
+            fireOut = true;
+        }
     }
 
     // Getters
