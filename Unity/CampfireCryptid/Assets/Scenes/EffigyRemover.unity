@@ -2358,7 +2358,7 @@ MonoBehaviour:
   effigyPrefab: {fileID: 3114499499348872349, guid: 18599ed1bddf105449ac3514a5277adf, type: 3}
   numberOfEffigies: 0
   maxNumberOfEffigies: 10
-  globalData: {fileID: 0}
+  globalData: {fileID: 11400000, guid: f568fbea8e0702442aa74ff444ac0679, type: 2}
 --- !u!4 &1167770346
 Transform:
   m_ObjectHideFlags: 0

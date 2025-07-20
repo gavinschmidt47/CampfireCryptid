@@ -61,6 +61,8 @@ public class EffigyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        globalData.TimeSetDown(Time.deltaTime);
+        globalData.FireSetDown(Time.deltaTime);
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame )
         {
             // Get the mouse position

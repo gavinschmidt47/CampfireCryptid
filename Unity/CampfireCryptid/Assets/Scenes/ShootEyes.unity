@@ -556,6 +556,7 @@ MonoBehaviour:
   - {fileID: 3977682838855482659, guid: 01303ca4d6550be40b1bcede5018dbe3, type: 3}
   - {fileID: 2814641187323192532, guid: fd8d066eefede494781c3e520f0e74c7, type: 3}
   - {fileID: 7024854821443361592, guid: c25540256998c16458002072a55fb51d, type: 3}
+  globalData: {fileID: 11400000, guid: f568fbea8e0702442aa74ff444ac0679, type: 2}
   eyeSpawnUpperBound: 350
   eyeSpawnLowerBound: -433
   eyeSpawnLeftBound: -875

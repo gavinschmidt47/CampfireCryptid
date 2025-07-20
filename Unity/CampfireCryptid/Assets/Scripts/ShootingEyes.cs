@@ -8,6 +8,7 @@ public class ShhotingEyes : MonoBehaviour
 {
     public RectTransform gunCrosshair;
     public GameObject[] eyePrefabs;
+    public GlobalData globalData;
     public float eyeSpawnUpperBound = 5.5f;
     public float eyeSpawnLowerBound = -3.5f;
     public float eyeSpawnLeftBound = -8.5f;
@@ -43,6 +44,9 @@ public class ShhotingEyes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        globalData.TimeSetDown(Time.deltaTime);
+        globalData.FireSetDown(Time.deltaTime);
         float moveX = Keyboard.current.aKey.isPressed ? -1 :
                       Keyboard.current.dKey.isPressed ? 1 : 0;
         float moveY = Keyboard.current.sKey.isPressed ? -1 :

@@ -56,6 +56,8 @@ public class FireTendingManager : MonoBehaviour
         // Update is called once per frame
         void Update()
     {
+        globalData.TimeSetDown(Time.deltaTime);
+        globalData.FireSetDown(Time.deltaTime);
         // Check for mouse input
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
